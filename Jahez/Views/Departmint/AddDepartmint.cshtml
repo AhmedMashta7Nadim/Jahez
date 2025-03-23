@@ -1,0 +1,54 @@
+﻿@model Models.DTO.DepartmintDTO
+
+@{
+    ViewData["Title"] = "إنشاء قسم جديد";
+    Layout = "_Layout"; 
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">@ViewData["Title"]</h2>
+
+    <form asp-action="AddDepartmint" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <!-- اسم القسم -->
+        <div class="form-group mb-3">
+            <label asp-for="NameDepartmint" class="control-label">اسم القسم</label>
+            <input asp-for="NameDepartmint" class="form-control" />
+            <span asp-validation-for="NameDepartmint" class="text-danger"></span>
+        </div>
+
+        <!-- نوع القسم -->
+        <div class="form-group mb-3">
+            <label asp-for="SectionType" class="control-label">نوع القسم</label>
+            <input asp-for="SectionType" class="form-control" />
+            <span asp-validation-for="SectionType" class="text-danger"></span>
+        </div>
+
+        <!-- الوصف -->
+        <div class="form-group mb-3">
+            <label asp-for="Description" class="control-label">الوصف</label>
+            <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <!-- تحميل الصورة -->
+        <div class="form-group mb-4">
+            <label asp-for="img" class="control-label">صورة القسم</label>
+            <input asp-for="img" type="file" class="form-control-file" accept="image/*" />
+            <span asp-validation-for="img" class="text-danger"></span>
+        </div>
+
+        <!-- زر الإرسال -->
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">إنشاء</button>
+            <a asp-action="Index" class="btn btn-secondary">إلغاء</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

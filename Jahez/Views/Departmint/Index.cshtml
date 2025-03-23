@@ -1,0 +1,34 @@
+﻿@model List<Models.VM.DepartmintSummary>
+
+@{
+    ViewData["Title"] = "قائمة الأقسام";
+    Layout = "_Layout";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">@ViewData["Title"]</h2>
+
+    <p>
+        <a asp-action="AddDepartmint" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> إنشاء جديد
+        </a>
+    </p>
+
+    <div class="row">
+        <!-- صف رئيسي -->
+        @foreach (var ee in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <!-- عمود يأخذ 3/12 من المساحة (4 أعمدة في الصف الواحد) -->
+                <div class="card h-100">
+                    <!-- ارتفاع كامل للتوحيد -->
+                    <img class="card-img-top" src="@ee.Path" alt="الصورة غير متوفرة" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">@ee.NameDepartmint</h5>
+                        <p class="card-text">@ee.Description</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
