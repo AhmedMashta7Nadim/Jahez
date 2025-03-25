@@ -18,6 +18,7 @@ namespace Models.Model
         [NotMapped]
         public IFormFile img { get; set; }
         public string Path { get; set; }
+        public List<Categorie> categories { get; set; } = new List<Categorie>();
 
     }
 }

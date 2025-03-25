@@ -4,6 +4,7 @@ using InfraStractur.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InfraStractur.Migrations
 {
     [DbContext(typeof(ConnectDataBase))]
-    partial class ConnectDataBaseModelSnapshot : ModelSnapshot
+    [Migration("20250323225240_add-Table-category")]
+    partial class addTablecategory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -247,9 +250,6 @@ namespace InfraStractur.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<string>("CategorieId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -309,8 +309,6 @@ namespace InfraStractur.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CategorieId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -383,20 +381,6 @@ namespace InfraStractur.Migrations
                         .IsRequired();
 
                     b.Navigation("departmint");
-                });
-
-            modelBuilder.Entity("Models.Model.User", b =>
-                {
-                    b.HasOne("Models.Model.Categorie", "categorie")
-                        .WithMany("users")
-                        .HasForeignKey("CategorieId");
-
-                    b.Navigation("categorie");
-                });
-
-            modelBuilder.Entity("Models.Model.Categorie", b =>
-                {
-                    b.Navigation("users");
                 });
 
             modelBuilder.Entity("Models.Model.Departmint", b =>

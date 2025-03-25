@@ -18,6 +18,14 @@ namespace InfraStractur.Repository.IServices
         ///getById
         ///
         Task<dynamic> GetByIdAsync(string Id,bool IsSummary);
+        ////////
+        ///get And List
+        ////////
+        Task<List<TResult>?> GetAllAndList<TResult>(
+            string Id,
+            bool IsList,
+            Func<List<T>, List<T>> listFunc
+        );
         ////////////
         ///Added Data 
         ///

@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using InfraStractur.Data;
 using Models.Model;
 using InfraStractur.Repository.RepositoryModels;
+using Microsoft.AspNetCore.Authorization;
+using Auth.SettingsPolicy;
 
 namespace Jahez
 {
@@ -21,6 +23,8 @@ namespace Jahez
 
 
             builder.Services.AddScoped<DepartmintRepository>();
+            builder.Services.AddScoped<CategorieRepository>();
+
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -36,6 +40,17 @@ namespace Jahez
             builder.Services.AddControllersWithViews();
             builder.Services.AddControllers();
             builder.Services.AddRazorPages();
+
+
+
+
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("SuperMarketOwnerOrAdmin", policy =>
+                    policy.Requirements.Add(new CategorieOwnerRequirement()));
+            });
+
+            builder.Services.AddScoped<IAuthorizationHandler, CategorieOwnerHandler>();
 
             var app = builder.Build();
 

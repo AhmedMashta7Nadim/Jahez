@@ -4,6 +4,7 @@ using InfraStractur.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InfraStractur.Migrations
 {
     [DbContext(typeof(ConnectDataBase))]
-    partial class ConnectDataBaseModelSnapshot : ModelSnapshot
+    [Migration("20250324221101_user-add-col-catigryId")]
+    partial class useraddcolcatigryId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -388,15 +391,10 @@ namespace InfraStractur.Migrations
             modelBuilder.Entity("Models.Model.User", b =>
                 {
                     b.HasOne("Models.Model.Categorie", "categorie")
-                        .WithMany("users")
+                        .WithMany()
                         .HasForeignKey("CategorieId");
 
                     b.Navigation("categorie");
-                });
-
-            modelBuilder.Entity("Models.Model.Categorie", b =>
-                {
-                    b.Navigation("users");
                 });
 
             modelBuilder.Entity("Models.Model.Departmint", b =>

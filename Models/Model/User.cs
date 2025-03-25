@@ -11,6 +11,8 @@ namespace Models.Model
         public override string Id { get => base.Id; set => base.Id = value; }
         public bool IsActive { get; set; } = true;
         public UserRole Role { get; set; }
+        public string? CategorieId { get; set; }
+        public Categorie? categorie { get; set; }
 
     }
 }

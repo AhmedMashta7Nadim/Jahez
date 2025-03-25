@@ -21,11 +21,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\InfraStractur\InfraStractur.csproj" />
+    <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\uploads\" />
+    <ProjectReference Include="..\Auth\Auth.csproj" />
   </ItemGroup>
 
 </Project>

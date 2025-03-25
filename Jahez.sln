@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfraStractur", "InfraStractur\InfraStractur.csproj", "{A91C0B4F-7836-47D0-A9FC-CC8EA32E9A9F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth", "Auth\Auth.csproj", "{5D71291E-5243-4858-8937-F1FBDC882706}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{A91C0B4F-7836-47D0-A9FC-CC8EA32E9A9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A91C0B4F-7836-47D0-A9FC-CC8EA32E9A9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A91C0B4F-7836-47D0-A9FC-CC8EA32E9A9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D71291E-5243-4858-8937-F1FBDC882706}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D71291E-5243-4858-8937-F1FBDC882706}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D71291E-5243-4858-8937-F1FBDC882706}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D71291E-5243-4858-8937-F1FBDC882706}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
