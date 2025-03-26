@@ -49,7 +49,7 @@ namespace Jahez
                 options.AddPolicy("SuperMarketOwnerOrAdmin", policy =>
                     policy.Requirements.Add(new CategorieOwnerRequirement()));
             });
-
+            builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<IAuthorizationHandler, CategorieOwnerHandler>();
 
             var app = builder.Build();

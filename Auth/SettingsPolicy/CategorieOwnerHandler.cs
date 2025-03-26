@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using InfraStractur.Data;
 using InfraStractur.Repository.RepositoryModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Models.Model;
 
@@ -35,31 +37,31 @@ namespace Auth.SettingsPolicy
             CategorieOwnerRequirement requirement
             )
         {
+            var httpContext = context.Resource as HttpContext;
+            var routeData = httpContext?.GetRouteData();
+            Console.WriteLine(routeData);
+            // الحصول على الـ id من الراوت
+            var categorieId = routeData?.Values["id"]?.ToString();
+           
+
             var user = await _userManager.GetUserAsync(context.User);
-            var getListWithUsers = await c.categories.
-                Include(u => u.users)
-                .FirstOrDefaultAsync(x => x.Id == user.CategorieId);
-          
+           
             if (user == null)
             {
                 return;
             }
             Console.WriteLine($"User CategorieId: {user.CategorieId}");
 
-
-
-            foreach (var ee in getListWithUsers.users)
+            if (user.CategorieId== categorieId)
             {
-                    if (user.CategorieId == ee.CategorieId)
-                    {
-                        context.Succeed(requirement);
-                        return;
-                    }
+                context.Succeed(requirement);
+                return;
             }
-           
 
-            // السماح إذا كان المستخدم أدمن
-            if (await _userManager.IsInRoleAsync(user, "Admin"))
+
+
+                // السماح إذا كان المستخدم أدمن
+                if (await _userManager.IsInRoleAsync(user, "Admin"))
             {
                 context.Succeed(requirement);
                 return;

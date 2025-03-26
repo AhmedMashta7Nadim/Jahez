@@ -26,7 +26,7 @@ namespace Jahez.Controllers
             var connectDataBase = _context.categories.Include(c => c.departmint);
             return View(await connectDataBase.ToListAsync());
         }
-
+        //[Authorize(Roles = "User")]
         [Authorize(Policy = "SuperMarketOwnerOrAdmin")]
         public async Task<IActionResult> Details(string id)
         {
