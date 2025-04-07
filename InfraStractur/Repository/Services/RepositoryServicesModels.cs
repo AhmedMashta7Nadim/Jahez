@@ -4,6 +4,7 @@ using InfraStractur.Repository.IServices;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using Models.Entitys;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace InfraStractur.Repository.Services
 {
@@ -37,26 +38,40 @@ namespace InfraStractur.Repository.Services
             return add.Entity;
         }
 
-        // جلب البيانات مع قوائم إضافية بناءً على شرط
         public async Task<List<TResult>?> GetAllAndList<TResult>(
-            string Id,
-            bool IsList,
-            Func<List<T>, List<T>> listFunc
-        )
+     string Id,
+     bool IsList,
+     Func<IQueryable<T>, IQueryable<T>>? queryModifier = null
+ )
         {
-            var get = await context.Set<T>()
-                                   .FirstOrDefaultAsync(x => EF.Property<string>(x, "Id") == Id);
+            var query = context.Set<T>().AsQueryable();
+
+            if (queryModifier != null)
+            {
+                query = queryModifier(query); // مثلاً: Include للعلاقات
+            }
+
+            var get = await query.FirstOrDefaultAsync(x => EF.Property<string>(x, "Id") == Id);
 
             if (get == null)
                 return null;
 
             if (IsList)
             {
-                var list = await context.Set<T>()
-                                .Where(x => EF.Property<string>(x, "Id") == Id)
-                                .ToListAsync();
-                return listFunc(list).Cast<TResult>().ToList();
+                var list = await query
+                    .Where(x => EF.Property<string>(x, "Id") == Id)
+                    .ToListAsync();
+
+                // إذا كانت T و TResult نفس النوع
+                if (typeof(TResult) == typeof(T))
+                {
+                    return list.Cast<TResult>().ToList();
+                }
+
+                // إذا كنت تستخدم AutoMapper
+                return list.Select(item => mapper.Map<TResult>(item)).ToList();
             }
+
             return new List<TResult> { mapper.Map<TResult>(get) };
         }
 
@@ -64,7 +79,9 @@ namespace InfraStractur.Repository.Services
 
         public async Task<List<TResult>?> GetAllAsync<TResult>(bool IsSummary=false)
         {
-            var getAll = await context.Set<T>().ToListAsync();
+            var getAll = await context.Set<T>()
+                .Where(x=>x.IsActive)
+                .ToListAsync();
             if (IsSummary)
             {
                 var mapping = mapper.Map<List<V>>(getAll);
@@ -94,6 +111,10 @@ namespace InfraStractur.Repository.Services
         {
             var getAll = await context.Set<T>()
                                       .FirstOrDefaultAsync(x => x.Id == Id)??null;
+
+            getAll!.IsActive = false;
+            await context.SaveChangesAsync();
+
             return "Deleted";
         }
 

@@ -24,7 +24,7 @@ namespace InfraStractur.Repository.IServices
         Task<List<TResult>?> GetAllAndList<TResult>(
             string Id,
             bool IsList,
-            Func<List<T>, List<T>> listFunc
+            Func<IQueryable<T>, IQueryable<T>> listFunc
         );
         ////////////
         ///Added Data 

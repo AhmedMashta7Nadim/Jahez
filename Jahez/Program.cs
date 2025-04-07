@@ -24,6 +24,7 @@ namespace Jahez
 
             builder.Services.AddScoped<DepartmintRepository>();
             builder.Services.AddScoped<CategorieRepository>();
+            builder.Services.AddScoped<User>();
 
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -49,6 +50,15 @@ namespace Jahez
                 options.AddPolicy("SuperMarketOwnerOrAdmin", policy =>
                     policy.Requirements.Add(new CategorieOwnerRequirement()));
             });
+
+            builder.Services.AddAuthentication()
+                   .AddGoogle(options =>
+                   {
+                       IConfigurationSection googleAuthintication=builder.Configuration.GetSection("AuthinticationGoogle:Google");
+                       options.ClientId = googleAuthintication["ClientId"];
+                       options.ClientSecret = googleAuthintication["ClientSecret"];
+                   });
+
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<IAuthorizationHandler, CategorieOwnerHandler>();
 

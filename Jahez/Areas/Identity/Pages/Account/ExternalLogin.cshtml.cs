@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Models.Model;
+using Models.Enum;
 
 namespace Jahez.Areas.Identity.Pages.Account
 {
@@ -29,6 +30,7 @@ namespace Jahez.Areas.Identity.Pages.Account
         private readonly IUserStore<User> _userStore;
         private readonly IUserEmailStore<User> _emailStore;
         private readonly IEmailSender _emailSender;
+        private readonly User user;
         private readonly ILogger<ExternalLoginModel> _logger;
 
         public ExternalLoginModel(
@@ -36,7 +38,9 @@ namespace Jahez.Areas.Identity.Pages.Account
             UserManager<User> userManager,
             IUserStore<User> userStore,
             ILogger<ExternalLoginModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            User user
+            )
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -44,6 +48,7 @@ namespace Jahez.Areas.Identity.Pages.Account
             _emailStore = GetEmailStore();
             _logger = logger;
             _emailSender = emailSender;
+            this.user = user;
         }
 
         /// <summary>
@@ -106,6 +111,8 @@ namespace Jahez.Areas.Identity.Pages.Account
                 return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
             }
             var info = await _signInManager.GetExternalLoginInfoAsync();
+            user.FirstName = info.Principal.Identity.Name.Split(' ')[0];
+            user.LastName = info.Principal.Identity.Name.Split(' ')[1];
             if (info == null)
             {
                 ErrorMessage = "Error loading external login information.";
@@ -152,17 +159,27 @@ namespace Jahez.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
+                
                 var user = CreateUser();
 
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                user.FirstName = info.Principal.Identity.Name.Split(' ')[0];
+                user.LastName = info.Principal.Identity.Name.Split(' ')[1]??" ";
+                user.Role = UserRole.User;
+                
 
+                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+                //await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                //string email_FirstName = Input.Email.Split('@').ToString();
+                //user.FirstName = email_FirstName;
+                //user.LastName = email_FirstName;
+                user.EmailConfirmed = true;
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
                     result = await _userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)
                     {
+                        await _userManager.AddToRoleAsync(user,"User");
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
 
                         var userId = await _userManager.GetUserIdAsync(user);
@@ -180,7 +197,8 @@ namespace Jahez.Areas.Identity.Pages.Account
                         // If account confirmation is required, we need to show the link if we don't have a real email sender
                         if (_userManager.Options.SignIn.RequireConfirmedAccount)
                         {
-                            return RedirectToPage("./RegisterConfirmation", new { Email = Input.Email });
+                            //return RedirectToPage("./RegisterConfirmation", new { Email = Input.Email });
+                            return RedirectToPage("Home/Index");
                         }
 
                         await _signInManager.SignInAsync(user, isPersistent: false, info.LoginProvider);

@@ -2,81 +2,136 @@
 @model LoginModel
 
 @{
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = "تسجيل الدخول";
+    Layout = "_Layout";
 }
 
-<h1>@ViewData["Title"]</h1>
-<div class="row">
-    <div class="col-md-4">
-        <section>
-            <form id="account" method="post">
-                <h2>Use a local account to log in.</h2>
-                <hr />
-                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                    <label asp-for="Input.Email" class="form-label">Email</label>
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card border-0 shadow-lg" style="background-color: #514386;">
+                <div class="card-header text-white text-center py-4" style="background-color: #403694;">
+                    <h1 class="display-5 fw-bold mb-0">
+                        <i class="bi bi-door-open"></i> @ViewData["Title"]
+                    </h1>
                 </div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-                    <label asp-for="Input.Password" class="form-label">Password</label>
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
-                </div>
-                <div class="checkbox mb-3">
-                    <label asp-for="Input.RememberMe" class="form-label">
-                        <input class="form-check-input" asp-for="Input.RememberMe" />
-                        @Html.DisplayNameFor(m => m.Input.RememberMe)
-                    </label>
-                </div>
-                <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
-                </div>
-                <div>
-                    <p>
-                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
-                    </p>
-                    <p>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
-                    </p>
-                    <p>
-                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
-                    </p>
-                </div>
-            </form>
-        </section>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to log in.</h3>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                            about setting up this ASP.NET application to support logging in via external services</a>.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins!)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
+
+                <div class="card-body p-5">
+                    <form id="account" method="post">
+                        <!-- نموذج تسجيل الدخول -->
+                        <div class="mb-4">
+                            <h3 class="text-white mb-4">
+                                <i class="bi bi-person-circle"></i> الدخول بحساب محلي
+                            </h3>
+
+                            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                            <!-- حقل البريد الإلكتروني -->
+                            <div class="form-floating mb-4">
+                                <input asp-for="Input.Email"
+                                       class="form-control border-0"
+                                       style="background-color: #6253A1; color: white;"
+                                       placeholder="البريد الإلكتروني" />
+                                <label asp-for="Input.Email" class="text-white-50">البريد الإلكتروني</label>
+                                <span asp-validation-for="Input.Email" class="text-warning small"></span>
+                            </div>
+
+                            <!-- حقل كلمة المرور -->
+                            <div class="form-floating mb-4">
+                                <input asp-for="Input.Password"
+                                       class="form-control border-0"
+                                       style="background-color: #6253A1; color: white;"
+                                       placeholder="كلمة المرور" />
+                                <label asp-for="Input.Password" class="text-white-50">كلمة المرور</label>
+                                <span asp-validation-for="Input.Password" class="text-warning small"></span>
+                            </div>
+
+                            <!-- تذكرني -->
+                            <div class="form-check mb-4">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       style="background-color: #6253A1;"
+                                       asp-for="Input.RememberMe" />
+                                <label class="form-check-label text-white-50" asp-for="Input.RememberMe">
+                                    تذكر بيانات الدخول
+                                </label>
+                            </div>
+
+                            <!-- زر التسجيل -->
+                            <button id="login-submit"
+                                    type="submit"
+                                    class="w-100 btn btn-lg fw-bold text-white"
+                                    style="background-color: #403694; transition: all 0.3s;"
+                                    onmouseover="this.style.transform='scale(1.02)'; this.style.backgroundColor='#352879'"
+                                    onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#403694'">
+                                <i class="bi bi-box-arrow-in-right"></i> دخول
+                            </button>
+
+                            <!-- الروابط المساعدة -->
+                            <div class="mt-4 text-center">
+                                <p class="mb-2">
+                                    <a id="forgot-password"
+                                       class="text-white-50 text-decoration-none"
+                                       asp-page="./ForgotPassword">
+                                        نسيت كلمة المرور؟
+                                    </a>
+                                </p>
+                                <p class="mb-2">
+                                    <a asp-page="./Register"
+                                       class="text-white-50 text-decoration-none"
+                                       asp-route-returnUrl="@Model.ReturnUrl">
+                                        <i class="bi bi-person-plus"></i> إنشاء حساب جديد
+                                    </a>
+                                </p>
+                                <p class="mb-0">
+                                    <a id="resend-confirmation"
+                                       class="text-white-50 text-decoration-none"
+                                       asp-page="./ResendEmailConfirmation">
+                                        <i class="bi bi-envelope-arrow-up"></i> إعادة إرسال التأكيد
+                                    </a>
+                                </p>
+                            </div>
                         </div>
                     </form>
-                }
-            }
-        </section>
+
+                    <!-- الدخول عبر خدمات خارجية -->
+                    <div class="mt-5 pt-4 border-top border-secondary">
+                        <h3 class="text-white mb-4">
+                            <i class="bi bi-shield-check"></i> الدخول عبر الخدمات
+                        </h3>
+
+                        @if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                        {
+                            <div class="alert alert-warning">
+                                لم يتم إعداد أي خدمات خارجية للدخول.
+                            </div>
+                        }
+                        else
+                        {
+                            <form id="external-account" asp-page="./ExternalLogin" method="post">
+                                <div class="d-grid gap-3">
+                                    @foreach (var provider in Model.ExternalLogins!)
+                                    {
+                                        <button type="submit"
+                                                class="btn btn-outline-light d-flex align-items-center justify-content-center gap-2"
+                                                name="provider"
+                                                value="@provider.Name">
+                                            <i class="bi bi-@provider.DisplayName.ToLower()"></i>
+                                            الدخول بواسطة @provider.DisplayName
+                                        </button>
+                                    }
+                                </div>
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

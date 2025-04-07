@@ -4,68 +4,69 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<div class="container py-5">
+    <h1 class="text-primary mb-4" style="font-family: 'Arial Black', sans-serif; letter-spacing: 2px;">
+        JAHIZ Categories
+    </h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.NameCategorie)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Quantity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.dateTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.departmint)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsActive)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NameCategorie)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.dateTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.departmint.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsActive)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <a asp-action="Create" class="btn btn-primary fw-bold">
+            <i class="bi bi-plus-circle"></i> Create New
+        </a>
+    </div>
+
+    <div class="row g-4">
+        @foreach (var item in Model)
+        {
+            <div class="col-lg-4 col-md-6">
+                <div class="card border-3 border-primary shadow-lg h-100" style="background: linear-gradient(145deg, #f8f9fa 0%, #e9ecef 100%);">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">
+                            <i class="bi bi-tag-fill"></i> @Html.DisplayFor(modelItem => item.NameCategorie)
+                        </h5>
+                    </div>
+
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span class="text-primary fw-bold">Description:</span>
+                                <span class="text-dark">@Html.DisplayFor(modelItem => item.Description)</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span class="text-primary fw-bold">Price:</span>
+                                <span class="text-success">$@Html.DisplayFor(modelItem => item.Price)</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span class="text-primary fw-bold">Quantity:</span>
+                                <span class="text-danger">@Html.DisplayFor(modelItem => item.Quantity)</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span class="text-primary fw-bold">Date:</span>
+                                <span class="text-muted">@Html.DisplayFor(modelItem => item.dateTime)</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span class="text-primary fw-bold">Department:</span>
+                                <span class="text-info">@Html.DisplayFor(modelItem => item.departmint.Id)</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="card-footer bg-primary bg-opacity-10 d-flex flex-md-row flex-column gap-2">
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-pencil-square"></i> Edit
+                        </a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm">
+                            <i class="bi bi-eye-fill"></i> Details
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger btn-sm">
+                            <i class="bi bi-trash3-fill"></i> Delete
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Add Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">

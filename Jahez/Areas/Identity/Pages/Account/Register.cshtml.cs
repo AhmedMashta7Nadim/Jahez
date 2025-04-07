@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Models.Model;
-
+using Models.Enum;
 namespace Jahez.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
@@ -120,7 +120,7 @@ namespace Jahez.Areas.Identity.Pages.Account
                 user.EmailConfirmed = true;
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
-                user.Role = 0;
+                user.Role = UserRole.User;
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using InfraStractur.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using InfraStractur.Data;
 using Models.Model;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Jahez.Controllers
 {
@@ -46,15 +42,15 @@ namespace Jahez.Controllers
             return View(categorie);
         }
 
-        [Authorize(Policy = "SuperMarketOwnerOrAdmin")]
+        //[Authorize(Policy = "SuperMarketOwnerOrAdmin")]
         public IActionResult Create()
         {
-            ViewData["departmintId"] = new SelectList(_context.departmints, "Id", "Id");
+            ViewData["departmintId"] = new SelectList(_context.departmints.Where(d => d.IsActive), "Id", "NameDepartmint");
             return View();
         }
 
         [HttpPost]
-        [Authorize(Policy = "SuperMarketOwnerOrAdmin")]
+        //[Authorize(Policy = "SuperMarketOwnerOrAdmin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("NameCategorie,Description,Price,Quantity,dateTime,departmintId,Id,IsActive")] Categorie categorie)
         {
